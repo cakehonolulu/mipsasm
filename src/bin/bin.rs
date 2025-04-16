@@ -14,7 +14,7 @@ use yaml_rust::YamlLoader;
 #[clap(author, version, about, long_about = None)]
 struct Cli {
     /// Assemble or disassemble the input file
-    #[clap(arg_enum, value_parser)]
+    #[clap(value_enum)]
     mode: Mode,
     /// Write output to this file
     #[clap(short, value_parser, value_name = "output")]

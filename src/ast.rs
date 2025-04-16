@@ -257,6 +257,19 @@ impl Instruction {
             _ => None,
         }
     }
+
+    pub fn to_le_bytes(&self) -> [u8; 4] {
+        match self {
+            Instruction::Immediate { bytes, .. }
+            | Instruction::Jump { bytes, .. }
+            | Instruction::Register { bytes, .. } => {
+                let mut b = [0; 4];
+                b.copy_from_slice(&bytes[0].to_le_bytes());
+                b
+            }
+            Instruction::Bytes { bytes } => bytes.to_le_bytes(),
+        }
+    }
 }
 
 impl fmt::Display for Instruction {
