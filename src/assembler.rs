@@ -209,8 +209,8 @@ pub fn assemble(insts: &mut Vec<ast::Instruction>) {
                 I::Xori => 0b001110 << 26 | rs.as_num() << 21 | rt.as_num() << 16 | imm.as_u32(),
             }
             ast::Instruction::Jump { op, target, .. } => match op {
-                J::J => 0b000010 << 26 | (target.as_u32() & 0x3FFFFFF) >> 2,
-                J::Jal => 0b000011 << 26 | (target.as_u32() & 0x3FFFFFF) >> 2,
+                J::J => 0b000010 << 26 | ((target.as_u32() >> 2) & 0x03FFFFFF),
+                J::Jal => 0b000011 << 26 | ((target.as_u32() >> 2) & 0x03FFFFFF),
             }
             ast::Instruction::Register { op, rs, rt, rd, sa, .. } => match op {
                 R::Abs => {
