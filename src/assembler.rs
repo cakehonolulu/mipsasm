@@ -410,8 +410,14 @@ pub fn assemble(insts: &mut Vec<ast::Instruction>) {
                     bytes.push(rd.as_num() << 11 | 0b010010);
                     0b000001 << 21 | 6 << 6 | 0b110110
                 }
-                R::Mult => rs.as_num() << 21 | rt.as_num() << 16 | 0b011000,
-                R::Multu => rs.as_num() << 21 | rt.as_num() << 16 | 0b011001,
+                R::Mult  => rs.as_num() << 21
+                            | rt.as_num() << 16
+                            | rd.as_num() << 11
+                            | 0b011000,
+                R::Multu => rs.as_num() << 21
+                            | rt.as_num() << 16
+                            | rd.as_num() << 11
+                            | 0b011001,
                 R::Neg => rs.as_num() << 16 | rd.as_num() << 11 | 0b100010,
                 R::Negu => rs.as_num() << 16 | rd.as_num() << 11 | 0b100011,
                 R::NegS => 0b010001 << 26 | 0b10000 << 21 | rs.as_num() << 11 | rd.as_num() << 6 | 0b000111,

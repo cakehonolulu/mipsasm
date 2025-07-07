@@ -467,16 +467,32 @@ impl<'a> Parser<'a> {
             //  Format:  op rs, rt
             "dmult" | "dmultu" | "mult" | "multu" | "teq" | "tge" | "tgeu" | "tlt" | "tltu"
             | "tne" => {
-                if args.len() != 2 {
-                    return Err(error!(self, InvalidOperandCount, arg, 2, args.len()));
-                }
-                let rs = args.first().unwrap().parse().map_err(
-                    |ast::RegParseError::RegParseError(e)| error!(self, InvalidRegister, e),
-                )?;
-                let rt = args.get(1).unwrap().parse().map_err(
-                    |ast::RegParseError::RegParseError(e)| error!(self, InvalidRegister, e),
-                )?;
-                Ok(inst!(Reg, op, rs, rt, ast::Register::null()))
+                match args.len() {
+                   3 => {
+                       let rd = args[0].parse().map_err(
+                            |ast::RegParseError::RegParseError(e)| error!(self, InvalidRegister, e),
+                        )?;
+                       let rs = args[1].parse().map_err(
+                            |ast::RegParseError::RegParseError(e)| error!(self, InvalidRegister, e),
+                        )?;
+                       let rt = args[2].parse().map_err(
+                            |ast::RegParseError::RegParseError(e)| error!(self, InvalidRegister, e),
+                        )?;
+                       Ok(inst!(Reg, op, rs, rt, rd))
+                   }
+                   2 => {
+                       let rs = args[0].parse().map_err(
+                            |ast::RegParseError::RegParseError(e)| error!(self, InvalidRegister, e),
+                        )?;
+                       let rt = args[1].parse().map_err(
+                            |ast::RegParseError::RegParseError(e)| error!(self, InvalidRegister, e),
+                        )?;
+                       Ok(inst!(Reg, op, rs, rt, ast::Register::null()))
+                   }
+                   _ => {
+                       return Err(error!(self, InvalidOperandCount, arg, 0, args.len()));
+                   }
+               }
             }
             // -----------------------------------------------------------------
             // |  SPECIAL  |   rs    |  00000  |   rd    |  00000  |    op     |
