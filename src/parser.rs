@@ -590,7 +590,7 @@ impl<'a> Parser<'a> {
                 }
                 Ok(inst!(Imm, op, ast::Register::null(), rt, imm))
             }
-            "ddiv" | "ddivu" | "div" | "divu" => {
+            "ddiv" | "ddivu" => {
                 if args.len() != 3 && args.len() != 2 {
                     return Err(error!(self, InvalidOperandCount, arg, 3, args.len()));
                 }
@@ -608,6 +608,18 @@ impl<'a> Parser<'a> {
                     )?;
                     Ok(inst!(Reg, op, rs, rt, rd))
                 }
+            }
+            "div" | "divu" => {
+                if args.len() != 2 {
+                    return Err(error!(self, InvalidOperandCount, arg, 2, args.len()));
+                }
+                let rs = args[0].parse().map_err(
+                    |ast::RegParseError::RegParseError(e)| error!(self, InvalidRegister, e),
+                )?;
+                let rt = args[1].parse().map_err(
+                    |ast::RegParseError::RegParseError(e)| error!(self, InvalidRegister, e),
+                )?;
+                Ok(inst!(Reg, op, rs, rt, ast::Register::null()))
             }
             // -----------------------------------------------------------------
             // |  SPECIAL  |   rs    |     0000 0000 0000 000      |    op     |

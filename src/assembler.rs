@@ -290,12 +290,12 @@ pub fn assemble(insts: &mut Vec<ast::Instruction>) {
                     bytes.push(rs.as_num() << 21 | 0b000001 << 16 | 6 << 6 | 0b110100);
                     rd.as_num() << 11 | 0b010010
                 }
-                R::Divu => if rt.as_num() == 0 {
-                    rd.as_num() << 21 | rs.as_num() << 16 | 0b011011
-                } else {
-                    bytes.push(rt.as_num() << 21 | 7 << 6 | 0b110100);
-                    bytes.push(rs.as_num() << 21 | rt.as_num() << 16 | 0b011011);
-                    rd.as_num() << 11 | 0b010010
+                R::Divu     => {
+                    rs.as_num() << 21
+                | rt.as_num() << 16
+                | 0           << 11
+                | 0           << 6
+                | 0x1B
                 }
                 R::DivS => 0b010001 << 26 | 0b10000 << 21 | rt.as_num() << 16 | rs.as_num() << 11 | rd.as_num() << 6 | 0b000011,
                 R::DivD => 0b010001 << 26 | 0b10001 << 21 | rt.as_num() << 16 | rs.as_num() << 11 | rd.as_num() << 6 | 0b000011,
