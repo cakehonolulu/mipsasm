@@ -278,24 +278,25 @@ pub fn assemble(insts: &mut Vec<ast::Instruction>) {
                         rd.as_num() << 11 | 0b010010
                     }
                 },
-                R::Div => if rt.as_num() == 0 {
-                    rd.as_num() << 21 | rs.as_num() << 16 | 0b011010
-                } else {
-                    bytes.push(rt.as_num() << 21 | 7 << 6 | 0b110100);
-                    bytes.push(rs.as_num() << 21 | rt.as_num() << 16 | 0b011010);
-                    bytes.push(0b001111 << 26 | 0b000001 << 16 | 0xFFFF);
-                    bytes.push(0b001101 << 26 | 0b000001 << 21 | 0b000001 << 16 | 0xFFFF);
-                    bytes.push(0b000101 << 26 | rt.as_num() << 21 | 0b000001 << 16 | 3);
-                    bytes.push(0b001111 << 26 | 0b000001 << 16 | 0x8000);
-                    bytes.push(rs.as_num() << 21 | 0b000001 << 16 | 6 << 6 | 0b110100);
-                    rd.as_num() << 11 | 0b010010
+                R::Div => {
+                    if rt.as_num() == 0 {
+                        panic!("DIV: rt is 0!");
+                    }
+
+                    //    opcode=0, rs, rt, rd=0, shamt=0, funct=0x1A
+                    (0u32 << 26)
+                    | ((rs.as_num() as u32) << 21)
+                    | ((rt.as_num() as u32) << 16)
+                    | (0u32 << 11)
+                    | (0u32 << 6)
+                    | 0x1A 
                 }
                 R::Divu     => {
                     rs.as_num() << 21
-                | rt.as_num() << 16
-                | 0           << 11
-                | 0           << 6
-                | 0x1B
+                    | rt.as_num() << 16
+                    | 0           << 11
+                    | 0           << 6
+                    | 0b011011
                 }
                 R::DivS => 0b010001 << 26 | 0b10000 << 21 | rt.as_num() << 16 | rs.as_num() << 11 | rd.as_num() << 6 | 0b000011,
                 R::DivD => 0b010001 << 26 | 0b10001 << 21 | rt.as_num() << 16 | rs.as_num() << 11 | rd.as_num() << 6 | 0b000011,
