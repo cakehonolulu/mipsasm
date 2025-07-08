@@ -550,6 +550,7 @@ impl fmt::Display for Instruction {
                 | R::CvtWS
                 | R::MovS
                 | R::MovD
+                | R::MovN
                 | R::NegS
                 | R::NegD
                 | R::SqrtS
@@ -1268,6 +1269,8 @@ pub enum RTypeOp {
     MovS,
     #[strum(to_string = "mov.d")]
     MovD,
+    #[strum(to_string = "movn")]
+    MovN,
     Mtc0,
     Mtc1,
     Mthi,

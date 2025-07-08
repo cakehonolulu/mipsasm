@@ -373,7 +373,7 @@ impl<'a> Parser<'a> {
             "add" | "addu" | "and" | "dadd" | "daddu" | "dsub" | "dsubu" | "nor" | "or" | "slt"
             | "sltu" | "sub" | "subu" | "xor" | "dmul" | "dmulu" | "dmulo" | "dmulou" | "drem"
             | "dremu" | "drol" | "dror" | "mul" | "mulu" | "mulo" | "mulou" | "rem" | "remu"
-            | "seq" | "sge" | "sgeu" | "sgt" | "sgtu" | "sle" | "sleu" | "sne" => {
+            | "seq" | "sge" | "sgeu" | "sgt" | "sgtu" | "sle" | "sleu" | "sne" | "movn" => {
                 if args.len() != 3 {
                     return Err(error!(self, InvalidOperandCount, arg, 3, args.len()));
                 }

@@ -383,6 +383,7 @@ pub fn assemble(insts: &mut Vec<ast::Instruction>) {
                 R::Move => rs.as_num() << 16 | rd.as_num() << 11 | 0b100001,
                 R::MovS => 0b010001 << 26 | 0b10000 << 21 | rs.as_num() << 11 | rd.as_num() << 6 | 0b000110,
                 R::MovD => 0b010001 << 26 | 0b10001 << 21 | rs.as_num() << 11 | rd.as_num() << 6 | 0b000110,
+                R::MovN => rs.as_num() << 21 | rt.as_num() << 16 | rd.as_num() << 11 | 0b001011,
                 R::Mtc0 => 0b010000 << 26 | 0b00100 << 21 | rt.as_num() << 16 | rd.as_num() << 11,
                 R::Mtc1 => 0b010001 << 26 | 0b00100 << 21 | rt.as_num() << 16 | rd.as_num() << 11,
                 R::Mthi => rs.as_num() << 21 | 0b010001,
